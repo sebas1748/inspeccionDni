@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DashboardController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ form_label(form.brochure, 'Subir:')}}
+                {{ form_widget(form.brochure, {'attr': {'class':'form-control', 'placeholder':'Seleccione Archivo'}})}}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ form_label(form.delegaciones, 'Elegir Delegación')}}
+                {{ form_widget(form.delegaciones, {'attr': {'class':'form-control'}})}}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ form_label(form.codigo, 'codigo de lote')}}
+                {{ form_widget(form.codigo, {'attr': {'class':'form-control'}})}}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ form_label(form.archivo, 'nombre del archivo')}}
+                {{ form_widget(form.archivo, {'attr': {'class':'form-control'}})}}
+            </div>
+        </div>
+
+    </div>
+        <button type="submit" class="btn btn-default add-to-cart" onclick="inputVacios(event);"><span class="fa fa-search"></span> Guardar </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

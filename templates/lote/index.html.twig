@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lote index{% endblock %}
+
+{% block body %}
+    <h1>Lote index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigo</th>
+                <th>Archivo</th>
+                <th>BrochureFilename</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lote in lotes %}
+            <tr>
+                <td>{{ lote.id }}</td>
+                <td>{{ lote.codigo }}</td>
+                <td>{{ lote.archivo }}</td>
+                <td>{{ lote.brochureFilename }}</td>
+                <td>
+                    <a href="{{ path('lote_show', {'id': lote.id}) }}">show</a>
+                    <a href="{{ path('lote_edit', {'id': lote.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('lote_new') }}">Create new</a>
+{% endblock %}
