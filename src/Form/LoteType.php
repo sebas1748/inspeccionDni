@@ -7,6 +7,7 @@ use App\Entity\Lote;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -16,8 +17,9 @@ class LoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('codigo')
-            ->add('archivo')
+
+            ->add('codigo', HiddenType::class)
+            ->add('archivo', HiddenType::class)
             ->add('brochure', FileType::class, [
                 'label' => 'Brochure (PDF file)',
                 // unmapped means that this field is not associated to any entity property

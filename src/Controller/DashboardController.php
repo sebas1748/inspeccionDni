@@ -5,7 +5,11 @@ namespace App\Controller;
 use App\Entity\DniRecibidos;
 use App\Entity\Lote;
 use App\Form\LoteType;
+use App\Repository\DniRecibidosRepository;
+use App\Repository\LoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +24,7 @@ class DashboardController extends AbstractController
      */
     public function index(Request $request, SluggerInterface $slugger): Response
     {
+
         $lote = new Lote();
         $form = $this->createForm(LoteType::class, $lote);
         $form->handleRequest($request);
@@ -43,33 +48,26 @@ class DashboardController extends AbstractController
                 }
                 $lote->setBrochureFilename($newFilename1);
             }
+            $lote->setCodigo(Lote::CODIGOLOTE + 1);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($lote);
             $entityManager->flush();
 
-            return $this->redirectToRoute('file-save');
+            //$this->addFlash('id_new', $lote->getDelegaciones()->getDepId());
+            //return $this->redirectToRoute('file_save');
+            return $this->redirectToRoute('file_save', ['id'=>$lote->getId()]);
         }
         return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
-            'lote' => $lote,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/filesave", name="file-save")
+     * @Route("/fileSave/{id}", name="file_save", requirements={"id":"\d+"})
      */
-    public function saveData(Request $request, SluggerInterface $slugger): Response
+    public function fileSave(Lote $lote, $id): Response
     {
-
-        /*$file = fopen("./file/sebas.txt", "r") or exit("No se puede abrir el archivo");
-
-        while (!feof($file)) {
-            echo fgets($file) . "<br />";
-        }
-        fclose($file);*/
-
         $cardelimitador = '"';
         $carpeta = './file/brochures/';
         $nomarxiu = 'recibido.txt';
@@ -82,7 +80,6 @@ class DashboardController extends AbstractController
 
         while ($a = fgetcsv($oa, 1000, $cardelimitador)) {
             $c++;
-            $prefijo = 0000;
 
             $dnirecibido = new DniRecibidos();
 
@@ -93,24 +90,91 @@ class DashboardController extends AbstractController
             $dnirecibido->setEjemplar($a[5]);
             $dnirecibido->setFecnac($a[6]);
             $dnirecibido->setFectra($a[7]);
-            $dnirecibido->setDelegacion(1);
-            $dnirecibido->setTramite($prefijo . $c);
+            $dnirecibido->setDelegacion($lote->getDelegaciones()->getDepId());
+            $dnirecibido->setTramite(1);
             $dnirecibido->setNdel("0");
-            $dnirecibido->setDelegacion(1);
             $dnirecibido->setEstado("1");
-            $dnirecibido->setLote(1);
+            $dnirecibido->setLote($lote->getId());
 
             $entityManager->persist($dnirecibido);
             $entityManager->flush();
         }
 
+        //echo 'codigo '.$lote->getCodigo();
         echo 'total registros: ' . $c;
         fclose($oa);
 
 
         return $this->render('dashboard/pruebaguardado.html.twig', [
-            'controller_name' => 'DashboardController',
+
         ]);
 
+    }
+
+    /**
+     * @Route("/dni_buscar", name="dni_search", methods={"GET"})
+     */
+    public function search(Request $request, DniRecibidosRepository $dniRecibidosRepository, LoteRepository $loteRepository)
+    {
+        $form = $this->createFormBuilder()
+            ->add('dni', IntegerType::class,[
+                'required' => false,
+            ])
+            ->add('codigo', TextType::class,[
+                'required' => false,
+            ])
+            ->add('delegacion', TextType::class,[
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        //$data = $form->getData();
+        //$dnirec = $dniRecibidosRepository->buscarPorDni($data['dni']);
+        //var_dump('hola mundo: ', $dnirec);die();
+
+        return $this->render('dashboard/dnisearch.html.twig', [
+            'form' => $form->createView()
+            //'dnirec' => $dnirec
+        ]);
+    }
+
+    /**
+     * @Route("/dni_resultado", name="dni_result", methods={"GET","POST"})
+     */
+    public function result(Request $request, DniRecibidosRepository $dniRecibidosRepository, LoteRepository $loteRepository)
+    {
+        $form = $this->createFormBuilder()
+            ->add('dni', IntegerType::class,[
+                'required' => false,
+            ])
+            ->add('codigo', TextType::class,[
+                'required' => false,
+            ])
+            ->add('delegacion', TextType::class,[
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //echo 'entro';
+            $em = $this->getDoctrine()->getManager();
+            $params = $request->request->get('form');
+            //var_dump('esto es params: ',$params);die();
+            $dnirec = $dniRecibidosRepository->buscarPorDni($params['dni']);
+            //var_dump('hola mundo: ', $dnirec);die();
+
+            if (!$dnirec) {
+                //echo 'no entro';
+                $dnirec = null;
+            }
+        }
+
+        return $this->render('dashboard/dniresult.html.twig', [
+            'form' => $form->createView(),
+            'dnirec' => $dnirec[0]
+        ]);
     }
 }

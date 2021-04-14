@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Lote
 {
+    const CODIGOLOTE= 0;
+    const cont = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

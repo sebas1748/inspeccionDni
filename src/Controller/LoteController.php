@@ -36,9 +36,8 @@ class LoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-
             $entityManager = $this->getDoctrine()->getManager();
+            //$lote->setDelegaciones();
             $entityManager->persist($lote);
             $entityManager->flush();
 

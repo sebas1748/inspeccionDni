@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Buscar DNI{% endblock %}
+
+{% block body %}
+<section>
+
+    <div class="col-md-6 padding-right">
+        <div class="left-sidebar">
+            <div class="brands_products"><!--brands_products-->
+                <h2>INICIAR CONSULTA</h2>
+                {{ form_start(form, {'action': path('dni_result'), 'method': 'POST', 'attr': {'class': 'form-horizontal qtyFrm'}}) }}
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        {{ form_label(form.dni, 'DNI') }}
+                        {{ form_widget(form.dni, {'attr': {'class': 'form-control', 'pattern': '[0-9]{8}', 'title':'inserte un numero de DNI valido' }}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        {{ form_label(form.codigo, 'Codigo') }}
+                        {{ form_widget(form.codigo, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        {{ form_label(form.delegacion, 'Delegacion') }}
+                        {{ form_widget(form.delegacion, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-default add-to-cart" onclick="inputVacios(event);"><span class="fa fa-search"></span> Iniciar Busqueda </button>
+                    {# <a href="{{ path('home')}}" class="btn btn-default add-to-cart"><i class="fa fa-reply-all text-inverse m-r-10"></i>Volver a la página anterior...</a> #}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    {#
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="recommended_items">
+                    <h2 class="title text-center">{{ dnirec.id }}</h2>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Apellido y Nombre</th>
+                            <td>{{ dnirec.apellido }} {{ dnirec.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de Dni</th>
+                            <td>{{ dnirec.dni }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigo de Lote</th>
+                            <td>{{ dnirec.lote }}</td>
+                        </tr>
+                        <tr>
+                            <th>Delegación</th>
+                            <td>{{ direc.delegacion }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>#}
+</section>
+{% endblock %}

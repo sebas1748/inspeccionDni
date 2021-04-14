@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultado DNI{% endblock %}
+
+{% block body %}
+<section>
+    <div class="container">
+        <div class="row">
+            {% if dnirec %}
+            <div class="col-md-6">
+                <div class="recommended_items">
+                    {# <h2 class="title text-center">{{ dnirec.id }}</h2> #}
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Apellido y Nombre</th>
+                            <td>{{ dnirec.apellido }} {{ dnirec.nombres }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de Dni</th>
+                            <td>{{ dnirec.dni }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigo de Lote</th>
+                            <td>{{ dnirec.lote }}</td>
+                        </tr>
+                        <tr>
+                            <th>Delegación</th>
+                            <td>{{ dnirec.delegacion }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+                {% if dnirec.estado == '1' %}
+                    <p>su dni está camino a la delegación</p>
+                {% elseif dnirec.estado == '2' %}
+                    <p>su dni está en la delegación...{{ dnirec.delegacion }}</p>
+                {% elseif dnirec.estado == '3' %}
+                    <p>su dni ha sido entregado</p>
+                {% endif %}
+
+            {% else %}
+                <p>su dni no está registrado</p>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}

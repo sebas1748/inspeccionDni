@@ -19,6 +19,20 @@ class DniRecibidosRepository extends ServiceEntityRepository
         parent::__construct($registry, DniRecibidos::class);
     }
 
+    /**
+     * @return DniRecibidos[] Returns an array of Personas objects
+     */
+    public function buscarPorDni($dni)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('
+        SELECT rec
+        FROM App\Entity\DniRecibidos rec
+        WHERE rec.dni = :dni
+        ')
+            ->setParameter('dni', $dni);
+        return $query->getResult();
+    }
     // /**
     //  * @return DniRecibidos[] Returns an array of DniRecibidos objects
     //  */
