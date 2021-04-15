@@ -163,8 +163,15 @@ class DashboardController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $params = $request->request->get('form');
             //var_dump('esto es params: ',$params);die();
-            $dnirec = $dniRecibidosRepository->buscarPorDni($params['dni']);
-            //var_dump('hola mundo: ', $dnirec);die();
+
+            if($params['dni']){
+                $dnirec = $dniRecibidosRepository->buscarPorDni($params['dni']);
+                //var_dump('esto es dni de if: ', $dnirec);die();
+            }else{
+                $dnirec = $dniRecibidosRepository->buscarPorLoteDel($params['codigo'] , $params['delegacion']);
+                //var_dump('esto es dni de else: ', $dnirec);die();
+            }
+
 
             if (!$dnirec) {
                 //echo 'no entro';

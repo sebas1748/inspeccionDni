@@ -33,6 +33,23 @@ class DniRecibidosRepository extends ServiceEntityRepository
             ->setParameter('dni', $dni);
         return $query->getResult();
     }
+
+    /**
+     * @return DniRecibidos[] Returns an array of Personas objects
+     */
+    public function buscarPorLoteDel($lote, $deleg)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('
+        SELECT rec
+        FROM App\Entity\DniRecibidos rec
+        WHERE rec.lote = :lote and rec.delegacion = :deleg
+        ')
+            ->setParameter('lote', $lote)
+            ->setParameter('deleg', $deleg);
+        return $query->getResult();
+    }
+
     // /**
     //  * @return DniRecibidos[] Returns an array of DniRecibidos objects
     //  */

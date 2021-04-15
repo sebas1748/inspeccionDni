@@ -12,19 +12,19 @@
                 {{ form_start(form, {'action': path('dni_result'), 'method': 'POST', 'attr': {'class': 'form-horizontal qtyFrm'}}) }}
                 <div class="form-group">
                     <div class="col-xs-12">
-                        {{ form_label(form.dni, 'DNI') }}
+                        {{ form_label(form.dni, 'DNI: ') }}
                         {{ form_widget(form.dni, {'attr': {'class': 'form-control', 'pattern': '[0-9]{8}', 'title':'inserte un numero de DNI valido' }}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-xs-12">
-                        {{ form_label(form.codigo, 'Codigo') }}
+                        {{ form_label(form.codigo, 'Número de lote: ') }}
                         {{ form_widget(form.codigo, {'attr': {'class': 'form-control'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-xs-12">
-                        {{ form_label(form.delegacion, 'Delegacion') }}
+                        {{ form_label(form.delegacion, 'Delegación: ') }}
                         {{ form_widget(form.delegacion, {'attr': {'class': 'form-control'}}) }}
                     </div>
                 </div>
